@@ -37,7 +37,7 @@ void PortF_Init(){
 	GPIO_PORTF_ICR_R = SW1; // Clear and previouse interupt flags
 	GPIO_PORTF_IM_R |= SW1;// Arm interupt
 		
-	NVIC_PRI7_R = (NVIC_PRI7_R & 0xFF00FFFF) | LEVEL1;	// Set priority level 5
+	NVIC_PRI7_R = (NVIC_PRI7_R & 0xFF00FFFF) | LEVEL1;	// Set priority level 1
 	NVIC_EN0_R = 0x40000000; // Enable PortF Handler interupt
 	
 	

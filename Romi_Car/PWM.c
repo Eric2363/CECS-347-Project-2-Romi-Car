@@ -20,20 +20,19 @@ void PWM_Init(){
 		
 	}
 	
+		// DIR Confiuration
+	GPIO_PORTB_DIR_R |= DIR_MASK; // Set B7 & B3 as output
+	GPIO_PORTB_DEN_R |= DIR_MASK;// Enable B7 & B3
+	GPIO_PORTB_AMSEL_R &=~ DIR_MASK;// Disable Analog mode
+	GPIO_PORTB_AFSEL_R &=~ DIR_MASK;// Disable ALternate function mode
+	
 	// MOTOR Configuration
 	GPIO_PORTB_DIR_R |= MOTORS; // Set B4 & B5 as output
 	GPIO_PORTB_DEN_R |= MOTORS; // Enable B4 & B5
 	GPIO_PORTB_AMSEL_R &=~ MOTORS;// Disable Analog mode
 	GPIO_PORTB_AFSEL_R |= MOTORS; // Enable Alternate function mode
 	GPIO_PORTB_PCTL_R = (GPIO_PORTB_PCTL_R & (~0x00FF0000) ) | PCTL_PWM_CODE; // Set B4 & B5 with PWM function
-	
-	// DIR Confiuration
-	GPIO_PORTB_DIR_R |= DIR_MASK; // Set B7,B6,B3,B2 as output
-	GPIO_PORTB_DEN_R |= DIR_MASK;// Enable B7,B6,B3,B2
-	GPIO_PORTB_AMSEL_R &=~ DIR_MASK;// Disable Analog mode for B7,B6,B3,B2
-	GPIO_PORTB_AFSEL_R &=~ DIR_MASK;// Disable Alternate function mode for B7,B6,B3,B2
-	
-	
+			
 	//PWM Configuration
 	PWM0_1_CTL_R = 0; // Stop generator 1
 	PWM0_1_GENA_R = 0xC8; // B4
@@ -43,12 +42,14 @@ void PWM_Init(){
 	PWM0_1_CMPB_R = 0;// duty B5
 	PWM0_1_CTL_R |= 0x01; // enable geneator 1
 	PWM0_ENABLE_R |= 0x0C; // enable PWM2, PWM3
-	
+
 	
 }
 void Duty(unsigned long duty_L, unsigned long duty_R){
-	
 	PWM0_1_CMPA_R = duty_L -1; // B4 count value when output rises
 	PWM0_1_CMPB_R = duty_R - 1; // B5 count value when output rises
 }
+
+
+
 	
