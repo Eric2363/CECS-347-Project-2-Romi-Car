@@ -3,22 +3,22 @@
 
 #include "PortF.h"
 #include "PWM.h"
-#include "PLL.h"
+
 #include "Timer1.h"
 
-#define DUTY50 8000
+#define DUTY50 8000 
 #define DUTY30 4800
 #define DUTY20 3200
 #define OFF 0
-void PortF_Init();
-void DelayMs(uint32_t ms);
 
-uint32_t ONE_SEC = 1000;
-bool START_FLAG = false;
+//load values for 1 second delay using 16bit timer mode. total loaded value = 16,000,000
+#define Load1000ms 0xFFFF   // max load for 16bit load is 0xFFFF
+#define Prescale1000ms 0xF4 // 16000000/(0xFFFF - 1) = 244 -> 0xF4 in hex
+
+bool START_FLAG = false; // flag to control when to start the motors using switch 1
 
 int main(){
 	
-	//PLL_Init();
 	PortF_Init();
   PWM_Init();
 	Timer1_Init();
@@ -32,8 +32,6 @@ int main(){
 		GPIO_PORTF_DATA_R = RED;
 		Duty(OFF,OFF);
 
-		
-				
 
 
 		while(START_FLAG){
@@ -46,54 +44,54 @@ int main(){
 			//Forward 50% Duty
 			GPIO_PORTB_DATA_R |= FORWARD;
 			Duty(DUTY50,DUTY50);
-			DelayMs(250);
+			gpio_delay(Load1000ms, Prescale1000ms);
 			
 			//Backwards 50% Duty
 			GPIO_PORTF_DATA_R = BLUE;
 			GPIO_PORTB_DATA_R &=~FORWARD;
 			Duty(DUTY50,DUTY50);
-			DelayMs(250);
+			gpio_delay(Load1000ms, Prescale1000ms);
 			
 			//Forwards Left Turn 20% Duty
 			GPIO_PORTF_DATA_R = PURPLE;
 			GPIO_PORTB_DATA_R |= FORWARD;
 			Duty(DUTY30,DUTY20);
-			DelayMs(250);
+			gpio_delay(Load1000ms, Prescale1000ms);
 			
 			//Forwards Right Turn 20% Duty
 			GPIO_PORTF_DATA_R = YELLOW;
 			GPIO_PORTB_DATA_R |= FORWARD;
 			Duty(DUTY20,DUTY30);
-			DelayMs(250);
+			gpio_delay(Load1000ms, Prescale1000ms);
 			
 			//Backwards Left Turn 20% Duty
 			GPIO_PORTF_DATA_R = TEAL;
 			GPIO_PORTB_DATA_R &=~ FORWARD;
 			Duty(DUTY30,DUTY20);
-			DelayMs(250);
+			gpio_delay(Load1000ms, Prescale1000ms);
 			
 			//Backwards Right Turn 20% Duty
 			GPIO_PORTF_DATA_R = WHITE;
 			GPIO_PORTB_DATA_R &=~ FORWARD;
 			Duty(DUTY20,DUTY30);
-			DelayMs(250);
+			gpio_delay(Load1000ms, Prescale1000ms);
 			
-			//Left Pivot 50% Duty
-			GPIO_PORTF_DATA_R = RED;
-			GPIO_PORTB_DATA_R |= FORWARD;
-			Duty(DUTY50,0);
-			DelayMs(250);
+
 			
-			//Right Pivot 50% Duty
-			GPIO_PORTF_DATA_R = RED;
-			GPIO_PORTB_DATA_R |=FORWARD;
-			Duty(0,DUTY50);
-			DelayMs(250);
+			//LEFT Pivot 50% Duty
+			GPIO_PORTF_DATA_R = BLUE;
+			GPIO_PORTB_DATA_R |=DIR_LEFT;
+			GPIO_PORTB_DATA_R &=~DIR_RIGHT;
+			Duty(DUTY50,DUTY50);
+			gpio_delay(Load1000ms, Prescale1000ms);
 			
-			//OFF
-			Duty(0,0);
-			START_FLAG = false;
-			break;
+			//RIGHT Pivot 50% Duty
+			GPIO_PORTF_DATA_R = BLUE;
+			GPIO_PORTB_DATA_R &=~ DIR_LEFT;
+			GPIO_PORTB_DATA_R |= DIR_RIGHT;
+			Duty(DUTY50,DUTY50);
+			gpio_delay(Load1000ms, Prescale1000ms);
+			
 		}
 		
 	
@@ -106,7 +104,8 @@ int main(){
 
 void GPIOPortF_Handler(){
 	GPIO_PORTF_ICR_R = SW1;
-	
+	for(volatile int i=0; i<160000; i++); // ~10ms delay at 16MHz
+
 	if(START_FLAG == true){
 		START_FLAG = false;
 	}
@@ -115,14 +114,3 @@ void GPIOPortF_Handler(){
 	}
 	
 }
-// Software Delay
-void DelayMs(uint32_t ms){
-    volatile uint32_t i, j;
-    for(j = 0; j < ms; j++){
-        for(i = 0; i < 13000; i++);   // 1 ms @ 80 MHz
-    }
-}
-
-
-	
-	

@@ -16,6 +16,7 @@ Description: PortF switch 1 configuration
 #define PORTF 0x20
 
 // Interupt Level
+#define LEVEL0 0x00000000
 #define LEVEL1 0x00200000
 
 // Port F LEDs for debugging

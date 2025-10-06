@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\SysTickPLL.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\SysTickPLL.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Sat Oct  4 19:54:03 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6240002: Last Updated: Mon Oct  6 14:26:10 2025
 <BR><P>
-<H3>Maximum Stack Usage =         60 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =         56 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-__rt_entry_main &rArr; main &rArr; DelayMs
+__rt_entry_main &rArr; main &rArr; gpio_delay
 <P>
 <H3>
 Functions with no stack information
@@ -689,8 +689,8 @@ Global Symbols
 <P><STRONG><a name="[b6]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[84]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 60 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; DelayMs
+<BR><BR>[Stack]<UL><LI>Max Depth = 56 + Unknown Stack Size
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; gpio_delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -769,30 +769,26 @@ Global Symbols
 
 <P><STRONG><a name="[c5]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[93]"></a>DelayMs</STRONG> (Thumb, 62 bytes, Stack size 12 bytes, main.o(.text.DelayMs))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = DelayMs
-</UL>
-<BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
 <P><STRONG><a name="[92]"></a>Duty</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, pwm.o(.text.Duty))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Duty
 </UL>
 <BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[28]"></a>GPIOPortF_Handler</STRONG> (Thumb, 58 bytes, Stack size 0 bytes, main.o(.text.GPIOPortF_Handler))
+<P><STRONG><a name="[28]"></a>GPIOPortF_Handler</STRONG> (Thumb, 94 bytes, Stack size 4 bytes, main.o(.text.GPIOPortF_Handler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = GPIOPortF_Handler
+</UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
 <P><STRONG><a name="[91]"></a>PWM_Init</STRONG> (Thumb, 276 bytes, Stack size 0 bytes, pwm.o(.text.PWM_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[90]"></a>PortF_Init</STRONG> (Thumb, 270 bytes, Stack size 0 bytes, portf.o(.text.PortF_Init))
+<P><STRONG><a name="[90]"></a>PortF_Init</STRONG> (Thumb, 306 bytes, Stack size 0 bytes, portf.o(.text.PortF_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[8f]"></a>Timer1A_Init</STRONG> (Thumb, 60 bytes, Stack size 0 bytes, timer1.o(.text.Timer1A_Init))
+<P><STRONG><a name="[8f]"></a>Timer1A_Init</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, timer1.o(.text.Timer1A_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer1_Init
 </UL>
 
@@ -804,10 +800,16 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[85]"></a>main</STRONG> (Thumb, 400 bytes, Stack size 48 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = main &rArr; DelayMs
+<P><STRONG><a name="[93]"></a>gpio_delay</STRONG> (Thumb, 70 bytes, Stack size 8 bytes, timer1.o(.text.gpio_delay))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = gpio_delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DelayMs
+<BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[85]"></a>main</STRONG> (Thumb, 410 bytes, Stack size 48 bytes, main.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = main &rArr; gpio_delay
+</UL>
+<BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_delay
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Duty
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer1_Init
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PWM_Init

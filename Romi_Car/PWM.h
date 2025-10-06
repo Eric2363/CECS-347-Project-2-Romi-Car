@@ -5,6 +5,8 @@
 #define PORTB 0x02
 #define MOTORS 0x30 //B5,B4 PWM
 #define DIR_MASK 0x88//B7,B3
+#define DIR_LEFT 0x08
+#define DIR_RIGHT 0x80
 #define SLP_MASK 0x44// B6,B2
 //==================================
 
