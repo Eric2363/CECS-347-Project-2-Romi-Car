@@ -16,10 +16,20 @@ Description: PortF switch 1 configuration
 #define PORTF 0x20
 
 // Interupt Level
+#define LEVEL0 0x00000000
 #define LEVEL1 0x00200000
 
-// Port F pins
+// Port F LEDs for debugging
 #define LEDS 0x0E
+#define RED 0x02
+#define BLUE 0x04
+#define PURPLE 0x06
+#define GREEN 0x08
+#define YELLOW 0x0A
+#define TEAL 0x0C
+#define WHITE 0x0E
+
+
 #define SW1 0x10
 
 void PortF_Init(void);

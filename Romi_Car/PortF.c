@@ -17,6 +17,11 @@ void PortF_Init(){
 
 	SYSCTL_RCGCGPIO_R |= PORTF;	//Enable Clk for PortF
 	while((SYSCTL_RCGCGPIO_R & PORTF) != PORTF){} // Wait for Clk to turn on
+
+	GPIO_PORTF_LOCK_R = 0x4C4F434B; // unlock Port F
+	GPIO_PORTF_CR_R |= 0x1F;        // allow changes to PF4–PF0
+
+		
 	
 	GPIO_PORTF_DIR_R |= LEDS; // Set PortF LEds as output
 	GPIO_PORTF_DEN_R |= LEDS; // Enable LEDS
@@ -37,8 +42,8 @@ void PortF_Init(){
 	GPIO_PORTF_ICR_R = SW1; // Clear and previouse interupt flags
 	GPIO_PORTF_IM_R |= SW1;// Arm interupt
 		
-	NVIC_PRI7_R = (NVIC_PRI7_R & 0xFF00FFFF) | LEVEL1;	// Set priority level 5
-	NVIC_EN0_R = 0x40000000; // Enable PortF Handler interupt
+	NVIC_PRI7_R = (NVIC_PRI7_R & 0xFF00FFFF) | LEVEL1;	// Set priority level 1
+	NVIC_EN0_R |= 0x40000000; // Enable PortF Handler interupt
 	
 	
 	
